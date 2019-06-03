@@ -26,6 +26,7 @@ class ArticleView(viewsets.ModelViewSet):
     ordering = ('title', )
 
     def create(self, request, *args, **kwargs):
+        print(request.data)
         if request.data.get("author") is not None:
             return Response({'ha haa': 'no no no'},
                             status=status.HTTP_400_BAD_REQUEST)
