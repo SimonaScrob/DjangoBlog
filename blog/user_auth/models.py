@@ -19,19 +19,19 @@ class User(AbstractUser):
     role = models.CharField(max_length=2, choices=ROLE_CHOICES, default=SIMPLE_USER)
     username = models.CharField(max_length=100, unique=True)
 
-    @cached_property
+    @property
     def is_admin(self):
         if self.role == "A":
             return True
         return False
 
-    @cached_property
+    @property
     def is_manager(self):
         if self.role == "M":
             return True
         return False
 
-    @cached_property
+    @property
     def is_simple_user(self):
         if self.role == "S":
             return True

@@ -13,8 +13,9 @@ schema_view = get_swagger_view(title='Blog')
 urlpatterns = [
     # path('admin/', admin.site.urls),
     url(r'^admin/', admin.site.urls),
-    url(r'^authentication/', include("user_auth.urls")),  # users API endpoints
-    url(r'^swagger/', schema_view)
+    url(r'', include("user_auth.urls")),  # users API endpoints
+    url(r'^swagger/', schema_view),
+    url(r'^accounts/', include('allauth.urls')),
 
 ]
 

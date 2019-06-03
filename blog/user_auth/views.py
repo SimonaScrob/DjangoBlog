@@ -42,7 +42,7 @@ class UserRegisterView(RegisterView):
 class UserView(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = (IsAllowedToCRUDUsers, IsAuthenticated, )
+    # permission_classes = (IsAllowedToCRUDUsers, IsAuthenticated, )
 
 
 user_login_view = UserLoginView.as_view()

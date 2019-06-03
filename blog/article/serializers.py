@@ -25,3 +25,11 @@ class ArticleCommentCRUDSerializer(serializers.ModelSerializer):
     class Meta:
         model = ArticleComment
         fields = ("content", "article")
+
+
+class ArticleCommentSerializer(serializers.ModelSerializer):
+    comments = ArticleCommentListSerializer(read_only=True, many=True)
+
+    class Meta:
+        model = Article
+        fields = ("pk", "title", "content", "author", "publication_date", "comments")

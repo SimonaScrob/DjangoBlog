@@ -19,7 +19,7 @@ class Command(BaseCommand):
                                                                 "name": article.get("author__first_name")})
         return users_emails
 
-    # if 5 days passed since the article was published an email will be sent
+    # 5 days - the article was published - an email will be sent
     def send_email(self):
         send_details = self.get_users_articles()
         if send_details:

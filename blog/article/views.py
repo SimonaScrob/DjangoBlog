@@ -2,6 +2,7 @@ from django.shortcuts import render
 
 # Create your views here.
 from rest_framework import viewsets, status
+from rest_framework.decorators import list_route
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
@@ -9,7 +10,7 @@ from article.filters import ArticleFilter
 from article.models import Article, ArticleComment
 from article.pagination import ArticlePagination
 from article.serializers import ArticleListSerializer, ArticleCRUDSerializer, ArticleCommentListSerializer, \
-    ArticleCommentCRUDSerializer
+    ArticleCommentCRUDSerializer, ArticleCommentSerializer
 # from user_auth.permissions import UserPermission
 from user_auth.permissions import IsAllowedToCRUDComments
 import django_filters.rest_framework
@@ -17,7 +18,7 @@ import django_filters.rest_framework
 
 class ArticleView(viewsets.ModelViewSet):
     # serializer_class = ArticleSerializer
-    # permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated, )
     # queryset = Article.objects.all()
     filter_backends = (django_filters.rest_framework.DjangoFilterBackend,)
     filter_class = ArticleFilter
@@ -72,11 +73,18 @@ class ArticleView(viewsets.ModelViewSet):
                             status=status.HTTP_401_UNAUTHORIZED)
         return super(ArticleView, self).destroy(request, *args, **kwargs)
 
+    @list_route(methods=['get'])
+    def all_articles_comments(self, request):
+        qs = Article.objects.all()
+        # print(qs)
+        result = ArticleCommentSerializer(qs, many=True).data
+        return Response(result, status=status.HTTP_200_OK)
+
 
 class ArticleCommentView(viewsets.ModelViewSet):
     queryset = ArticleComment.objects.all()
     # serializer_class = ArticleCommentSerializer
-    permission_classes = (IsAllowedToCRUDComments, IsAuthenticated, )
+    # permission_classes = (IsAllowedToCRUDComments, IsAuthenticated, )
 
     def create(self, request, *args, **kwargs):
         if request.data.get("owner") is not None:
